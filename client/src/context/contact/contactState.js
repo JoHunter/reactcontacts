@@ -1,18 +1,17 @@
 import React, { useReducer } from 'react';
-import uuid from 'uuid';
+//import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import ContactContext from './contactContext';
-import ContactReducer from './contactReducer';
+import contactReducer from './contactReducer';
 
 import {
   ADD_CONTACT,
   DELETE_CONTACT,
-  SET_CONTACT,
-  CLEAR_CONTACT,
+  SET_CURRENT,
+  CLEAR_CURRENT,
   UPDATE_CONTACT,
   FILTER_CONTACTS,
-  CLEAR_FILTER,
-  SET_ALERT,
-  REMOVE_ALERT
+  CLEAR_FILTER
 } from '../types';
 
 const ContactState = props => {
@@ -42,26 +41,41 @@ const ContactState = props => {
     ]
   };
 
-  const [state, dispatch] = useReducer(ContactReducer, initalState);
-  //Add Contact 
+  const [state, dispatch] = useReducer(contactReducer, initalState);
+
+  //Add Contact  use uuid because we don't have mongo setup for adding ///Goto Reducer
+  const addContact = contact => {
+    contact.id = uuidv4();
+    console.log(contact.id);
+    dispatch({ type: ADD_CONTACT, payload: contact });
+     //Now add it to the bottom here in Context
+  }
 
   //Delete Contact
+  const deleteContact = id => {
+    dispatch({ type: DELETE_CONTACT, payload: id });
+     //Now add it to the bottom here in Context
+     //console.log("deleted " + id)
+  }
 
   //Set Current Contact
-
   //Clear Current Contact
-
   //Update Contact 
 
   //Filter Contacts
 
   //Clear Filter
 
+  //Return Provider
+
   return (
     <ContactContext.Provider
       value={{
-        contacts: state.contacts
-      }}>
+        contacts: state.contacts,
+        addContact,
+        deleteContact
+      }}
+    >
       {props.children}
     </ContactContext.Provider>
   );

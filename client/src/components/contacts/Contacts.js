@@ -4,7 +4,7 @@ import ContactContext from '../../context/contact/contactContext';
 import ContactItem from './ContactItem';
 
 const Contacts = () => {
-  const contactContext = useContext(ContactContext);
+  const contactContext = useContext(ContactContext); //useContext is a hook
 
   //destructure
   const { contacts } = contactContext;
