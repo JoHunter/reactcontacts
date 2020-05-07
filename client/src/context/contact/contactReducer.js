@@ -15,12 +15,28 @@ export default (state, action) => {
         ...state,
         contacts: [...state.contacts, action.payload]
       };
+      case UPDATE_CONTACT:
+        return {
+          ...state,
+          contacts: state.contacts.map(contact => contact.id === action.payload.id ?
+            action.payload : contact)
+        };
       case DELETE_CONTACT:
         //here we return the state where we filter out the contacts where the contact id is not = to the action.payload
         //later we will delete it permanently
         return {
           ...state,
           contacts: state.contacts.filter(contact => contact.id != action.payload)
+        };
+        case SET_CURRENT:
+        return {
+          ...state,
+          current: action.payload
+        };
+        case CLEAR_CURRENT:
+        return {
+          ...state,
+          current: null
         };
     default:
       return state;

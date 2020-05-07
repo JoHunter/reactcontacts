@@ -38,7 +38,8 @@ const ContactState = props => {
         phone: '311-111-1111',
         type: 'professional'
       }
-    ]
+    ],
+    current: null
   };
 
   const [state, dispatch] = useReducer(contactReducer, initalState);
@@ -49,18 +50,30 @@ const ContactState = props => {
     console.log(contact.id);
     dispatch({ type: ADD_CONTACT, payload: contact });
      //Now add it to the bottom here in Context
-  }
+  };
 
   //Delete Contact
   const deleteContact = id => {
     dispatch({ type: DELETE_CONTACT, payload: id });
      //Now add it to the bottom here in Context
      //console.log("deleted " + id)
-  }
+  };
 
   //Set Current Contact
+  const setCurrent = contact => {
+    dispatch({ type: SET_CURRENT, payload: contact });
+  };
+
   //Clear Current Contact
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT }); //This means if we don't send payload. we are just setting it to null
+  }
+
   //Update Contact 
+  const updateContact = contact => {
+    dispatch({ type: UPDATE_CONTACT, payload: contact });
+  };
+
 
   //Filter Contacts
 
@@ -72,8 +85,12 @@ const ContactState = props => {
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
+        current: state.current,
         addContact,
-        deleteContact
+        deleteContact,
+        setCurrent,
+        clearCurrent,
+        updateContact
       }}
     >
       {props.children}
